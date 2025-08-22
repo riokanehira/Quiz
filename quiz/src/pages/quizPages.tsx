@@ -1,14 +1,14 @@
+import { useEffect, useState } from "react";
 import Display from "./components/Display/Display"
 import quizData from "../data/quiz"
 import Button from "./components/Button/Button";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../const";
 
 export default function QuizPages() {
     const [quizIndex,setQuizIndex] =useState<number>(0);
     const [answerLogs, setAnswerLogs] = useState<boolean[]>([]);
-    const navigaiton = useNavigate();
+    const navigation = useNavigate();
     const MAX_QUIZ_LEN =quizData.length;
 
 
@@ -28,23 +28,23 @@ export default function QuizPages() {
         const correctNum = answerLogs.filter((answer) =>{
           return answer === true;
         })
-        navigaiton(ROUTES.RESULT, {
+        navigation(ROUTES.RESULT, {
           state:{
             maxQuizLen: MAX_QUIZ_LEN,
-            correctNum: correctNum
+            correctNumLen: correctNum.length
 
           }
         });
       }
-    },[answerLogs, MAX_QUIZ_LEN, navigaiton]);
+    },[answerLogs, MAX_QUIZ_LEN, navigation]);
   
     return (
     <>
     {quizData[quizIndex] && <Display>
-        {`Q1 ${quizData[quizIndex].question}`}
+        {`Q${quizIndex +1} ${quizData[quizIndex].question}`}
     </Display>}
-    {
-      quizData[quizIndex].options.map((option,index)=>{
+    <br />
+    {quizData[quizIndex] && quizData[quizIndex].options.map((option,index)=>{
         return (
         <Button key ={`option-${index}`} onClick={() =>handleClick(index)}>
           {option}
